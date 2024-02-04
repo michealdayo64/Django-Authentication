@@ -1,0 +1,45 @@
+{% extends 'account/base.html' %}
+{% load static %}
+
+{% block title %}
+TZK - Login
+{% endblock %}
+
+{% block content %}
+<div class="col-12 p-0">    
+          <div class="login-card login-dark">
+            <div>
+              <div><a class="logo" href="index.html"><img class="img-fluid for-light" style="width: 200px; height: 20px;" src="{% static 'images/Tzkar • Creative.svg' %}" alt="looginpage"></a></div>
+              <div class="login-main"> 
+                <form class="theme-form">
+                  <h3>Sign in to account</h3>
+                  <p>Enter your email & password to login</p>
+                  <div class="form-group">
+                    <label class="col-form-label">Email Address</label>
+                    <input class="form-control" type="email" required="" placeholder="Test@gmail.com">
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Password</label>
+                    <div class="form-input position-relative">
+                      <input class="form-control" type="password" name="login[password]" required="" placeholder="*********">
+                      <div class="show-hide"><span class="show">                         </span></div>
+                    </div>
+                  </div>
+                  <div class="form-group mb-0">
+                    <div class="checkbox p-0">
+                      <input id="checkbox1" type="checkbox">
+                      <label class="text-muted" for="checkbox1">Remember password</label>
+                    </div><a class="link" href="{% url 'forget-password-page' %}">Forgot password?</a>
+                    <div class="text-end mt-3">
+                      <button class="btn btn-primary btn-block w-100" type="submit">Sign in</button>
+                    </div>
+                  </div>
+                  
+                  <p class="mt-4 mb-0 text-center">Don't have account?<a class="ms-2" href="{% url 'register-page' %}">Create Account</a></p>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+{% endblock %}
