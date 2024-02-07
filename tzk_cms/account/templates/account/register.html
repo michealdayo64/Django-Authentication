@@ -14,28 +14,31 @@ TZK - Register
                   <div>
                     <div><a class="logo" href="index.html"><img class="img-fluid for-light" style="width: 200px; height: 20px;" src="{% static 'images/Tzkar • Creative.svg' %}" alt="looginpage"></a></div>
                     <div class="login-main"> 
-                      <form class="theme-form">
+                      <form class="theme-form" action="{% url 'register-page' %}" method="post">{% csrf_token %}
                         <h3>Create your account</h3>
                         <p>Enter your personal details to create account</p>
                         <div class="form-group">
-                          <label class="col-form-label pt-0">Your Name</label>
+                          <label class="col-form-label pt-0">Your Names</label>
                           <div class="row g-2">
                             <div class="col-6">
-                              <input class="form-control" type="text" required="" placeholder="First name">
+                              <input class="form-control" type="text" required="" name="first_name" placeholder="First name">
                             </div>
                             <div class="col-6">
-                              <input class="form-control" type="text" required="" placeholder="Last name">
+                              <input class="form-control" type="text" required="" name="last_name" placeholder="Last name">
+                            </div>
+                            <div class="col-6">
+                              <input class="form-control" type="text" required="" name="username" placeholder="Username">
                             </div>
                           </div>
                         </div>
                         <div class="form-group">
                           <label class="col-form-label">Email Address</label>
-                          <input class="form-control" type="email" required="" placeholder="Test@gmail.com">
+                          <input class="form-control" type="email" required="" name="email" placeholder="Test@gmail.com">
                         </div>
                         <div class="form-group">
                           <label class="col-form-label">Password</label>
                           <div class="form-input position-relative">
-                            <input class="form-control" type="password" name="login[password]" required="" placeholder="*********">
+                            <input class="form-control" type="password" name="password" required="" placeholder="*********">
                             <div class="show-hide"><span class="show"></span></div>
                           </div>
                         </div>

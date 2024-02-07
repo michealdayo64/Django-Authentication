@@ -1,0 +1,9 @@
+TZK CMS ALGORITHM
+1. Authentication
+    a. Register
+    b. Login
+    c. Logout
+    d. Forget Password
+    e. Reset Password
+    f. Activate Account
+    
