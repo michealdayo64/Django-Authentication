@@ -185,11 +185,10 @@ def reset_forgot_password_page(request, uidb64, token):
                 messages.info(
                     request, 'Password link invalid, Pls request for a new one')
                 return redirect('forget-password-page')
-            else:
-                user.set_password(new_password)
-                user.save()
-                messages.info(request, "Password was set successfully")
-                return redirect('login')
+            user.set_password(new_password)
+            user.save()
+            messages.info(request, "Password was set successfully")
+            return redirect('login-page')
             
         except Exception as identifier:
             messages.info(request, 'something went wrong, try again')
