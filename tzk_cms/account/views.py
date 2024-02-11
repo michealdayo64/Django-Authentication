@@ -20,6 +20,8 @@ def index_page(request):
     return render(request, 'index.html')
 
 # Redirect Link
+
+
 def get_redirect_if_exists(request):
     redirect = None
     if request.GET:
@@ -58,7 +60,8 @@ def activateEmail(request, user, to_email):
         'token': account_activation_token.make_token(user),
         "protocol": 'https' if request.is_secure() else 'http'
     }
-    message = render_to_string("account/template_activate_account.html", email_content)
+    message = render_to_string(
+        "account/template_activate_account.html", email_content)
     # email = EmailMessage(mail_subject, settings.EMAIL_FROM, message, to=[to_email])
 
     # email.send(fail_silently=False)
@@ -97,7 +100,7 @@ def login_page(request):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
-        user = authenticate(email = email, password = password)
+        user = authenticate(email=email, password=password)
         if user:
             if user.is_active:
                 if user.is_staff:
@@ -131,6 +134,7 @@ def logout_function(request):
 
 # FORGET PASSWORD FUNTION
 def forget_password_page(request):
+    context = {}
     if request.method == "POST":
         email = request.POST.get('email')
         context = {
@@ -146,7 +150,7 @@ def forget_password_page(request):
                 'token': PasswordResetTokenGenerator().make_token(user[0]),
                 "protocol": 'https' if request.is_secure() else 'http'
             }
-            link = reverse('reset-password-page', kwargs={
+            link = reverse('reset-forgot-password-page', kwargs={
                 'uidb64': email_content['uid'], 'token': email_content['token']
             })
             reset_url = f'http://{current_site.domain}{link}'
@@ -156,71 +160,60 @@ def forget_password_page(request):
 
             messages.success(
                 request, f"You copy the link in the console")
-            redirect('login-page')
+            return redirect('login-page')
         else:
             messages.success(
                 request, "Account not valid, Kindly provide a valid email account")
-            redirect('forget-password-page')
+            return redirect('forget-password-page')
     return render(request, 'account/forget_password.html', context)
 
-# RESET PASSWORD FUNCTION
 
-
-def reset_password_page(request, uidb64, token):
+# RESET FORGOT PASSWORD FUNCTION
+def reset_forgot_password_page(request, uidb64, token):
     if request.method == "POST":
-        old_password = request.POST.get('old_password')
         new_password = request.POST.get('new_password')
-        if password1 != password2:
+        retype_new_password = request.POST.get('retype_new_password')
+        if retype_new_password != new_password:
             messages.info(request, "Password deos not match")
-            return render(request, "account/password_reset_form.html")
-    return render(request, 'account/reset_password.html')
-
-
-user = request.user
-    if user.is_authenticated:
-        email = request.POST.get('email')
-        old_password = request.POST.get('old_password')
-        new_password = request.POST.get('new_password')
-        if user.check_password(old_password):
-            user_id = Account.objects.get(id = user.id, email = email)
-            user_id.set_password(new_password)
-            user_id.save()
-            messages.success(request, 'Password reset successfully')
-            redirect("reset-password")
-        else:
-            messages.info(request, 'Password does not match old password')
-            redirect("reset-password")
-    else:
-        messages.warning(request, "User is not authenticatedtan")
-        redirect("index")
-
-
-
-if request.method == "POST":
-        password1 = request.POST.get('password1')
-        print(password1)
-        password2 = request.POST.get('password2')
-        (password2)
-        if password1 != password2:
-            messages.info(request, "Password deos not match")
-            return render(request, "account/password_reset_form.html")
-        if len(password1) < 6:
-            messages.info(request, "Password too short")
-            return render(request, "account/password_reset_form.html")
-
+            print('Password not match')
+            return render(request, "account/reset_forgot_password.html")
         try:
             user_id = force_str(urlsafe_base64_decode(uidb64))
+            print(user_id)
             user = Accounts.objects.get(pk=user_id)
-            user.set_password(password1)
-            user.save()
             if PasswordResetTokenGenerator().check_token(user, token):
                 messages.info(
                     request, 'Password link invalid, Pls request for a new one')
-                return redirect('forgot-password')
-            messages.info(request, "Password was set successfully")
-            return redirect('login')
+                return redirect('forget-password-page')
+            else:
+                user.set_password(new_password)
+                user.save()
+                messages.info(request, "Password was set successfully")
+                return redirect('login')
+            
         except Exception as identifier:
-            messages.info(request, 'something went wrong')
-            return render(request, "account/reset_password_form.html")
+            messages.info(request, 'something went wrong, try again')
+            print("something went wrong")
+            return render(request, "account/reset_forgot_password.html")
+    return render(request, 'account/reset_forgot_password.html')
+
+
+# RESET PASSWORD
+def reset_password(request):
+    user = request.user
+    if user.is_authenticated:
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        if user.check_password(old_password):
+            user_id = Accounts.objects.get(id=user.id)
+            user_id.set_password(new_password)
+            user_id.save()
+            messages.success(request, 'Password reset successfully')
+            return redirect("reset-password")
+        else:
+            messages.info(request, 'Password does not match old password')
+            return redirect("reset-password")
     else:
-        print("Enter something")
+        messages.warning(request, "User is not authenticatedtan")
+        redirect("index")
+    return render(request, 'account/reset_password.html')
