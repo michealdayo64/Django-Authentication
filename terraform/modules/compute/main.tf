@@ -30,7 +30,7 @@ data "aws_ami" "ubuntu" {
 # Create EC2 Key Pair
 resource "aws_key_pair" "deployer1" {
   key_name   = "${var.project_name}-key"
-  public_key = file("${path.root}/${var.ssh_public_key_path}")
+  public_key = file("${var.ssh_public_key_path}")
 
   tags = {
     Name = "${var.project_name}-key"
@@ -71,7 +71,7 @@ resource "aws_instance" "backend" {
 
   key_name = aws_key_pair.deployer1.key_name
 
-  associate_public_ip_address = true
+  associate_public_ip_address = false
 
 
   tags = {

@@ -1,5 +1,6 @@
 variable "project_name" {
-  type = string
+  type    = string
+  default = "django-auth-app"
 }
 
 variable "aws_region" {
@@ -24,11 +25,6 @@ variable "private_subnet_cidr" {
   default     = "10.0.2.0/24"
 }
 
-
-variable "backend_security_group_id" {
-  description = "Security group ID for the backend EC2 instance"
-  type        = string
-}
 
 variable "private_db_subnet_cidr_1" {
   description = "CIDR block for the private database subnet"

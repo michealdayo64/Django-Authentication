@@ -42,10 +42,12 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.is_staff = True
         user.save()
+        print("email activated")
         messages.success(
             request, "Thank you for your email confirmation. Now you can login your account.")
         return redirect('login-page')
     else:
+        print("email not activated")
         messages.error(request, "Activation link is invalid!")
     return redirect('login-page')
 
@@ -73,7 +75,7 @@ def activateEmail(request, user, to_email):
 # REGISTER FUNCTION
 def register_page(request, *args, **kwargs):
     if request.user.is_authenticated:
-        return redirect('index')
+        return redirect('index-page')
     context = {}
 
     if request.method == 'POST':
