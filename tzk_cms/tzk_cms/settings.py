@@ -30,7 +30,8 @@ SECRET_KEY = config('SECRET_KEY')
 #DEBUG = True
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ["10.0.2.122"]
+
+ALLOWED_HOSTS = []
 
 
 # Application definition

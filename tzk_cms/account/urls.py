@@ -10,5 +10,5 @@ urlpatterns = [
          name='reset-forgot-password-page'),
     path('reset-password/', reset_password, name='reset-password'),
     path('activate/<uidb64>/<token>/', activate, name='activate'),
-    path('index/', index_page, name='index-page')
+    path('', index_page, name='index-page')
 ]

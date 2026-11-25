@@ -12,11 +12,13 @@ resource "aws_db_instance" "this" {
   identifier = "${var.project_name}-mysql"
 
   engine         = "mysql"
-  engine_version = "8.0"
+  engine_version = "8.4.8"
 
   instance_class        = var.db_instance_class
   allocated_storage     = 20
   max_allocated_storage = 20
+
+  allow_major_version_upgrade = true
 
   db_name  = var.db_name
   username = var.db_username

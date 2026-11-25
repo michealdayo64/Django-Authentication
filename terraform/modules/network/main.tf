@@ -104,6 +104,15 @@ resource "aws_route_table" "private_rt" {
   }
 }
 
+resource "aws_route_table" "private_db_rt" {
+  vpc_id = aws_vpc.vpc.id
+
+  tags = {
+    Name = "${var.project_name}-private-db-rt"
+  }
+}
+
+
 resource "aws_route_table_association" "public_route_ass" {
   subnet_id      = aws_subnet.public_subnet.id
   route_table_id = aws_route_table.public_rt.id
@@ -112,6 +121,16 @@ resource "aws_route_table_association" "public_route_ass" {
 resource "aws_route_table_association" "private_route_ass" {
   subnet_id      = aws_subnet.private_subnet.id
   route_table_id = aws_route_table.private_rt.id
+}
+
+resource "aws_route_table_association" "private_db_route_ass" {
+  subnet_id      = aws_subnet.private_db_subnet_1.id
+  route_table_id = aws_route_table.private_db_rt.id
+}
+
+resource "aws_route_table_association" "private_db_route_ass_2" {
+  subnet_id      = aws_subnet.private_db_subnet_2.id
+  route_table_id = aws_route_table.private_db_rt.id
 }
 
 
